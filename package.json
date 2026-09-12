@@ -11,5 +11,8 @@
     "validate": "bun run --filter '@addonium/helpers' validate",
     "dev": "bun run --filter 'addonium-homepage' dev",
     "clean": "bun run --filter '*' clean"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.4.2"
   }
 }
