@@ -235,7 +235,7 @@ export function landing(sections: Section[] | null, helpers: HelperPage[] | null
       <div class="wrap hero-inner">
         <p class="eyebrow">An open standard · v1.0.0-draft</p>
         <h1 class="site-title">Addonium</h1>
-        <p class="lede">A freedom-first addon schema for content apps. If you can run a
+        <p class="lede">A freedom-first addon schema for music apps. If you can run a
           website or share a file, you can publish an addon. No accounts, no
           gatekeepers, no mandatory cloud.</p>
         <div class="hero-links">

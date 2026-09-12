@@ -1,6 +1,6 @@
 # Addonium
 
-**A freedom-first addon/module schema for content applications.**
+**A freedom-first addon/module schema for music applications.**
 
 `Version: 1.0.0-draft` · `Status: Draft` · `Spec text: CC0-1.0 (see LICENSE-CC0)` · `Code: Apache-2.0 (see LICENSE)`
 
