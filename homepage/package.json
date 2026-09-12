@@ -9,6 +9,7 @@
     "dev:client": "bun build ./src/main.tsx --outdir ./public/dist --target browser --format esm --watch",
     "start": "bun run server.ts",
     "build": "bun build ./src/main.tsx --outdir ./public/dist --target browser --format esm --minify",
+    "export": "bun run scripts/export.ts",
     "check": "bunx tsc --noEmit -p tsconfig.json",
     "clean": "rm -rf public/dist"
   },

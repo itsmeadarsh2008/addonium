@@ -109,7 +109,7 @@ function blurbOf(html: string): string {
   return text.length > 160 ? text.slice(0, 157) + "..." : text;
 }
 
-async function loadSections(): Promise<Section[] | null> {
+export async function loadSections(): Promise<Section[] | null> {
   if (!mdProcessor) return null;
   try {
     const md = await Bun.file(SPEC_PATH).text();
@@ -151,7 +151,7 @@ interface HelperPage {
   count: number;
 }
 
-async function loadHelperPages(): Promise<HelperPage[] | null> {
+export async function loadHelperPages(): Promise<HelperPage[] | null> {
   if (!mdProcessor || !helpersDoc?.collectHelperDocs) return null;
   try {
     const modules = await helpersDoc.collectHelperDocs();
@@ -213,7 +213,7 @@ function sectionNav(sections: Section[], current: string): string {
 
 /* ---------- pages ---------- */
 
-function landing(sections: Section[] | null, helpers: HelperPage[] | null): string {
+export function landing(sections: Section[] | null, helpers: HelperPage[] | null): string {
   const specRows = sections
     ? sections
         .map(
@@ -261,7 +261,7 @@ function landing(sections: Section[] | null, helpers: HelperPage[] | null): stri
   return layout({ title: "freedom-first addon schema", body });
 }
 
-function sectionPage(sections: Section[], current: string): string | null {
+export function sectionPage(sections: Section[], current: string): string | null {
   const i = sections.findIndex((s) => s.id === current);
   if (i === -1) return null;
   const s = sections[i];
@@ -281,7 +281,7 @@ function sectionPage(sections: Section[], current: string): string | null {
   return layout({ title: s.title, body });
 }
 
-function helpersIndex(pages: HelperPage[]): string {
+export function helpersIndex(pages: HelperPage[]): string {
   const rows = pages
     .map(
       (h) =>
@@ -297,7 +297,7 @@ function helpersIndex(pages: HelperPage[]): string {
   return layout({ title: "Helpers API", body });
 }
 
-function helperPage(pages: HelperPage[], current: string): string | null {
+export function helperPage(pages: HelperPage[], current: string): string | null {
   const i = pages.findIndex((h) => h.id === current);
   if (i === -1) return null;
   const h = pages[i];
@@ -322,7 +322,7 @@ function helperPage(pages: HelperPage[], current: string): string | null {
   return layout({ title: h.file, body });
 }
 
-function notFound(): string {
+export function notFound(): string {
   return layout({
     title: "not found",
     body: `<div class="wrap landing-main"><h2>Nothing here</h2><p><a href="/">Back home</a></p></div>`,
@@ -344,7 +344,8 @@ async function serveFile(path: string): Promise<Response | null> {
 const html = (s: string, status = 200) =>
   new Response(s, { status, headers: { "content-type": "text/html; charset=utf-8" } });
 
-const server = Bun.serve({
+export const server = import.meta.main
+  ? Bun.serve({
   port: Number(process.env["PORT"] ?? 3000),
   async fetch(req) {
     const url = new URL(req.url);
@@ -397,6 +398,8 @@ const server = Bun.serve({
     if (f) return f;
     return html(notFound(), 404);
   },
-});
+}) : null;
 
-console.log(`addonium homepage → http://localhost:${server.port}`);
+if (import.meta.main && server) {
+  console.log(`addonium homepage → http://localhost:${server.port}`);
+}
