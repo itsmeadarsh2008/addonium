@@ -1,0 +1,21 @@
+name: Addonium CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: {}
+
+jobs:
+  helpers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+      - run: bun install
+      - run: bun test
+      - run: bun run --filter '*' check
+      - name: Validate example manifests against JSON Schema
+        run: bun run --filter '@addonium/helpers' validate

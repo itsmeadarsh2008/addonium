@@ -1,0 +1,15 @@
+{
+  "name": "addonium-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "workspaces": ["packages/*", "homepage"],
+  "scripts": {
+    "test": "bun test",
+    "check": "bun run --filter '*' check",
+    "build": "bun run --filter '*' build",
+    "validate": "bun run --filter '@addonium/helpers' validate",
+    "dev": "bun run --filter 'addonium-homepage' dev",
+    "clean": "bun run --filter '*' clean"
+  }
+}
