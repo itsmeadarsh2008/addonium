@@ -1,0 +1,25 @@
+{
+  "addonium": "1.0",
+  "id": "club.example.communitymix",
+  "name": "Community Mix",
+  "version": "1.1.0",
+  "description": "Member-curated tracks. Tokens are issued by the author to Discord members.",
+  "type": "locked",
+  "auth": {
+    "method": "url-token",
+    "tokenGrant": "manual",
+    "requirements": [
+      {
+        "label": "Join the Example Discord to request a token",
+        "url": "https://discord.gg/example",
+        "detail": "Ask in #addon-access; the author issues personal tokenized links."
+      },
+      "Tokens are per-member — do not share your link."
+    ]
+  },
+  "baseUrl": "https://api.example.com/t/{token}",
+  "distribution": ["manifest"],
+  "resources": ["search", "stream"],
+  "types": ["track"],
+  "storesData": false
+}

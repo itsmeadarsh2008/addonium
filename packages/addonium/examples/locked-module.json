@@ -1,0 +1,18 @@
+{
+  "addonium": "1.0",
+  "id": "com.example.walledgarden",
+  "name": "Walled Garden Source",
+  "version": "0.9.1",
+  "type": "locked",
+  "auth": { "method": "module-key" },
+  "distribution": ["module"],
+  "resources": ["search", "stream"],
+  "clients": {
+    "enforced": true,
+    "allow": ["com.myplayer.official"],
+    "identify": "header",
+    "header": "X-Addonium-Client",
+    "onDeny": { "status": 403, "message": "Only the official client may use this addon." }
+  },
+  "storesData": false
+}

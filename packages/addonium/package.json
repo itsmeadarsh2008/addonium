@@ -1,0 +1,28 @@
+{
+  "name": "@addonium/helpers",
+  "version": "1.0.0-draft.1",
+  "description": "Runtime-agnostic TypeScript helpers for the Addonium addon spec (manifest, auth, URLs, allowlist, errors, updates, modules).",
+  "license": "Apache-2.0",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md"],
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target bun --format esm && bunx tsc --project tsconfig.build.json",
+    "check": "bunx tsc --noEmit -p tsconfig.json",
+    "test": "bun test",
+    "validate": "bun run scripts/validate.ts",
+    "clean": "rm -rf dist"
+  },
+  "devDependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "typescript": "^5.6.0"
+  }
+}

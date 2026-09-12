@@ -1,0 +1,14 @@
+{
+  "addonium": "1.0",
+  "id": "club.example.openradio",
+  "name": "Open Radio",
+  "version": "1.0.0",
+  "description": "A public collection of Creative Commons tracks.",
+  "type": "open",
+  "auth": null,
+  "baseUrl": "https://openradio.example.com",
+  "distribution": ["manifest"],
+  "resources": ["search", "stream"],
+  "types": ["track"],
+  "storesData": false
+}

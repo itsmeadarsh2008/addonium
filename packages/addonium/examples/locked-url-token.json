@@ -1,0 +1,16 @@
+{
+  "addonium": "1.0",
+  "id": "com.example.premiumsource",
+  "name": "Premium Source",
+  "version": "3.2.0",
+  "type": "locked",
+  "auth": {
+    "method": "url-token",
+    "tokenGrant": "self-serve",
+    "grantUrl": "https://example.com/account/addon-token"
+  },
+  "baseUrl": "https://api.example.com/t/{token}",
+  "distribution": ["manifest"],
+  "resources": ["search", "stream", "library"],
+  "storesData": true
+}
