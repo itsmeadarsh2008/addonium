@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Addonium — freedom-first addon schema</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="wrap">
+      <header>
+        <h1>Addonium</h1>
+        <p class="tag">A freedom-first addon/module schema for content applications.</p>
+        <p class="meta">Spec <code>1.0.0-draft</code> · Spec text CC0-1.0 · Code Apache-2.0</p>
+      </header>
+
+      <!-- Static fallback: fully usable with zero JS. React enhances this node if installed. -->
+      <div id="root">
+        <section class="card">
+          <h2>Install an addon</h2>
+          <ol>
+            <li>Paste a base URL or <code>manifest.json</code> URL (Open or tokenized Locked addon).</li>
+            <li>Or import a <code>.aium</code> module + separate <code>.aiumkey</code> key.</li>
+          </ol>
+          <p><a href="/spec">Read the spec</a> · <a href="/api/info">API info</a></p>
+        </section>
+        <section class="card">
+          <h2>Author in 60 seconds</h2>
+          <pre><code>{
+  "addonium": "1.0",
+  "id": "club.example.openradio",
+  "name": "Open Radio",
+  "version": "1.0.0",
+  "type": "open",
+  "auth": null,
+  "baseUrl": "https://openradio.example.com",
+  "resources": ["search", "stream"]
+}</code></pre>
+          <p>Validate: <code>bunx ajv-cli validate -s schema/addonium.schema.json -d manifest.json</code></p>
+        </section>
+      </div>
+
+      <footer>
+        <p>Author-sovereign · Zero mandatory infra · Progressive trust. See <code>SECURITY.md</code> before shipping a host.</p>
+      </footer>
+    </main>
+    <!-- Optional React enhancement: 404s harmlessly when bundle was never built. -->
+    <script type="module" src="/dist/main.js" onerror="void 0"></script>
+  </body>
+</html>
