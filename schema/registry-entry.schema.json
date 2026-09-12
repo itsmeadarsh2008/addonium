@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://addonium.dev/schema/registry-entry.schema.json",
+  "title": "Addonium Registry Entry",
+  "description": "Optional community index entry (spec §12.4). A directory pointer only — never a gatekeeper.",
+  "type": "object",
+  "required": ["id", "name", "manifestUrl", "type"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9.-]+$",
+      "description": "Must match the addon's manifest id."
+    },
+    "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "manifestUrl": { "type": "string", "format": "uri" },
+    "type": { "type": "string", "enum": ["open", "locked"] }
+  },
+  "additionalProperties": false
+}

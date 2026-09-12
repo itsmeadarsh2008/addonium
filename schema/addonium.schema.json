@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://addonium.dev/schema/manifest.schema.json",
+  "title": "Addonium Manifest",
+  "type": "object",
+  "required": ["addonium", "id", "name", "version", "type"],
+  "properties": {
+    "addonium": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+$" },
+    "id": { "type": "string", "pattern": "^[a-z0-9.-]+$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+" },
+    "description": { "type": "string", "maxLength": 300 },
+    "author": {
+      "oneOf": [
+        { "type": "string" },
+        {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "url": { "type": "string", "format": "uri" },
+            "contact": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "icon": { "type": "string", "format": "uri" },
+    "contentType": {
+      "type": "string",
+      "enum": ["music", "audiobook", "podcast", "video", "generic"]
+    },
+    "types": {
+      "type": "array",
+      "items": { "enum": ["track", "album", "artist", "playlist", "episode", "file"] }
+    },
+    "resources": {
+      "type": "array",
+      "items": {
+        "enum": ["search", "stream", "catalog", "lyrics", "library", "isrc", "resolve", "settings", "video"]
+      }
+    },
+    "baseUrl": {
+      "type": "string",
+      "description": "Root URL for HTTP addons. For Locked addons using url-token auth it MAY be a URI template containing a {token} placeholder (see §17.2) or an already-tokenized URL (§7), so plain `format: uri` is intentionally not enforced here.",
+      "minLength": 1
+    },
+    "distribution": {
+      "type": "array",
+      "items": { "enum": ["manifest", "module"] },
+      "minItems": 1
+    },
+    "type": { "type": "string", "enum": ["open", "locked"] },
+    "auth": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["method"],
+          "properties": {
+            "method": { "enum": ["bearer", "url-token", "api-key", "signed", "module-key"] },
+            "header": { "type": "string" },
+            "scheme": { "type": "string" },
+            "paramName": { "type": "string" },
+            "tokenGrant": { "enum": ["manual", "self-serve", "none"] },
+            "grantUrl": { "type": "string", "format": "uri" },
+            "required": { "type": "boolean" },
+            "requirements": {
+              "type": "array",
+              "description": "Author-defined, out-of-band access conditions (§6.2). Display-only, never enforced.",
+              "items": {
+                "oneOf": [
+                  { "type": "string" },
+                  {
+                    "type": "object",
+                    "required": ["label"],
+                    "properties": {
+                      "label": { "type": "string", "minLength": 1 },
+                      "url": { "type": "string" },
+                      "detail": { "type": "string" }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "clients": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "properties": {
+            "enforced": { "type": "boolean", "default": false },
+            "allow": { "type": "array", "items": { "type": "string" } },
+            "identify": { "enum": ["header", "userAgent", "queryParam"] },
+            "header": { "type": "string" },
+            "onDeny": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "integer" },
+                "message": { "type": "string" }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "storesData": { "type": "boolean", "default": false },
+    "update": {
+      "type": "object",
+      "properties": {
+        "manifestUrl": { "type": "string", "format": "uri" },
+        "checkInterval": { "type": "integer", "minimum": 60 }
+      }
+    },
+    "settings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "type", "label"],
+        "properties": {
+          "key": { "type": "string" },
+          "type": { "enum": ["select", "toggle", "text", "number"] },
+          "label": { "type": "string" },
+          "help": { "type": "string" },
+          "default": {},
+          "perNetwork": { "type": "boolean" },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": { "value": {}, "label": { "type": "string" } }
+            }
+          },
+          "maxLength": { "type": "integer" },
+          "placeholder": { "type": "string" },
+          "min": { "type": "number" },
+          "max": { "type": "number" },
+          "step": { "type": "number" }
+        }
+      }
+    },
+    "catalogs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "name"],
+        "properties": {
+          "id": { "type": "string" },
+          "type": { "enum": ["track", "album", "artist", "playlist"] },
+          "name": { "type": "string" }
+        }
+      }
+    },
+    "repository": { "type": "string", "format": "uri" },
+    "homepage": { "type": "string", "format": "uri" },
+    "license": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "const": "locked" } } },
+      "then": { "required": ["auth"], "properties": { "auth": { "not": { "type": "null" } } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "open" } } },
+      "then": { "properties": { "auth": { "type": "null" } } }
+    }
+  ]
+}
