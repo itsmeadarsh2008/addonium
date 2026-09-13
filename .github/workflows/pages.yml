@@ -26,7 +26,9 @@ jobs:
       - run: bun run --filter 'addonium-homepage' build
       - run: bun run --filter 'addonium-homepage' export
         env:
-          BASE_PATH: /addonium
+          # Custom domain https://addonium.unified.dpdns.org serves from root.
+          # Use BASE_PATH=/addonium only for project-pages preview builds.
+          BASE_PATH: ""
       - uses: actions/upload-pages-artifact@v3
         with:
           path: homepage/dist-static

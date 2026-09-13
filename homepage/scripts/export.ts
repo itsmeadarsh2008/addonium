@@ -1,6 +1,9 @@
 // Licensed under the Apache License, Version 2.0 (see LICENSE).
 // Static export for GitHub Pages: pre-renders every route to plain HTML.
-// Run: BASE_PATH=/addonium bun run export  (OUT_DIR=./dist-static)
+// Custom domain (https://addonium.unified.dpdns.org) serves from root:
+//   BASE_PATH= bun run export  (OUT_DIR=./dist-static)
+// Legacy project-pages URL (https://itsmeadarsh2008.github.io/addonium/):
+//   BASE_PATH=/addonium bun run export
 import { join } from "node:path";
 import {
   helpersIndex,
@@ -70,4 +73,17 @@ for await (const f of examples.scan(join(ROOT, "..", "packages", "addonium", "ex
   );
 }
 await Bun.write(join(OUT, ".nojekyll"), "");
+// Custom domain: GitHub Pages requires a CNAME file at the artifact root.
+// Prefer homepage/public/CNAME (also served by the live Bun server via
+// public/ static fallback); fall back to SITE_DOMAIN env.
+const cnameSrc = Bun.file(join(PUB, "CNAME"));
+if (await cnameSrc.exists()) {
+  await write("CNAME", await cnameSrc.arrayBuffer().then((b) => new Response(b)));
+} else {
+  const siteDomain = (process.env["SITE_DOMAIN"] ?? "addonium.unified.dpdns.org").trim();
+  if (siteDomain) {
+    await Bun.write(join(OUT, "CNAME"), `${siteDomain}\n`);
+    console.log("wrote CNAME");
+  }
+}
 console.log(`exported to ${OUT} (BASE_PATH=${BASE || "/"})`);

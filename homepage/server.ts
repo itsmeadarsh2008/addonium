@@ -178,10 +178,15 @@ const FONTS = `<link rel="preconnect" href="https://fonts.googleapis.com" />
       rel="stylesheet"
     />`;
 
-function head(title: string): string {
+function head(title: string, canonicalPath = "/"): string {
+  const site = (process.env["SITE_URL"] ?? "https://addonium.unified.dpdns.org").replace(/\/$/, "");
   return `<meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>${esc(title)} - Addonium</title>
+    <link rel="canonical" href="${esc(site + canonicalPath)}" />
+    <meta property="og:title" content="${esc(title)} - Addonium" />
+    <meta property="og:url" content="${esc(site + canonicalPath)}" />
+    <meta property="og:type" content="website" />
     <link rel="stylesheet" href="/styles.css" />
     ${FONTS}`;
 }
@@ -190,10 +195,11 @@ function layout(opts: {
   title: string;
   body: string;
   bundle?: boolean;
+  canonical?: string;
 }): string {
   return `<!doctype html>
 <html lang="en">
-  <head>${head(opts.title)}</head>
+  <head>${head(opts.title, opts.canonical ?? "/")}</head>
   <body>
     ${opts.body}
     <footer><div class="wrap"><p>Author-sovereign · Zero mandatory infra · Progressive trust. Spec text CC0-1.0 · Code Apache-2.0. <a href="https://github.com/itsmeadarsh2008/addonium">GitHub</a></p></div></footer>
@@ -258,7 +264,7 @@ export function landing(sections: Section[] | null, helpers: HelperPage[] | null
         <ol class="sec-list">${helperRows}</ol>
       </section>
     </div>`;
-  return layout({ title: "freedom-first addon schema", body });
+  return layout({ title: "freedom-first addon schema", body, canonical: "/" });
 }
 
 export function sectionPage(sections: Section[], current: string): string | null {
@@ -278,7 +284,7 @@ export function sectionPage(sections: Section[], current: string): string | null
         </nav>
       </main>
     </div>`;
-  return layout({ title: s.title, body });
+  return layout({ title: s.title, body, canonical: `/spec/${s.id}` });
 }
 
 export function helpersIndex(pages: HelperPage[]): string {
@@ -294,7 +300,7 @@ export function helpersIndex(pages: HelperPage[]): string {
       <p>Zero runtime dependencies. Works under Bun, Node 18+, and browsers. <code>bun add @addonium/helpers</code></p>
       <ol class="sec-list">${rows}</ol></section>
     </div>`;
-  return layout({ title: "Helpers API", body });
+  return layout({ title: "Helpers API", body, canonical: "/helpers" });
 }
 
 export function helperPage(pages: HelperPage[], current: string): string | null {
@@ -319,7 +325,7 @@ export function helperPage(pages: HelperPage[], current: string): string | null 
         </nav>
       </main>
     </div>`;
-  return layout({ title: h.file, body });
+  return layout({ title: h.file, body, canonical: `/helpers/${h.id}` });
 }
 
 export function notFound(): string {
